@@ -54,6 +54,7 @@ public class LogisalesServiceImpl implements LogisalesService {
 
 		ModelMap resultMap = null;
 
+<<<<<<< HEAD
 		int cnt = 1;
 
 		//새로운 견적 일련번호 생성
@@ -83,6 +84,22 @@ public class LogisalesServiceImpl implements LogisalesService {
 			bean.setEstimateNo(newEstimateNo);
 			bean.setEstimateDetailNo(newEstimateDetailNo.toString());
 
+=======
+		String newEstimateNo = getNewEstimateNo(estimateDate);
+
+		newEstimateTO.setEstimateNo(newEstimateNo);
+
+		estimateMapper.insertEstimate(newEstimateTO);
+			
+		ArrayList<EstimateDetailTO> estimateDetailTOList = newEstimateTO.getEstimateDetailTOList(); //bean객체
+			
+		for (EstimateDetailTO bean : estimateDetailTOList) {
+			String newEstimateDetailNo = getNewEstimateDetailNo(newEstimateNo);
+				
+			bean.setEstimateNo(newEstimateNo);
+				
+			bean.setEstimateDetailNo(newEstimateDetailNo);
+>>>>>>> 910f5d1 (Initial commit)
 		}
 
 		resultMap = batchEstimateDetailListProcess(estimateDetailTOList,newEstimateNo);
