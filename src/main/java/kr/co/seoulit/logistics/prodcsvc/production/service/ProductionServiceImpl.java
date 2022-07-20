@@ -432,7 +432,7 @@ public class ProductionServiceImpl implements ProductionService {
 	            
 	    }
 
-	    resultMap = batchMrpGatheringListProcess(mrpGatheringList);    // 여기서 모음.
+	    resultMap = batchMrpGatheringListProcess(mrpGatheringList);
 
 	    TreeSet<String> mrpGatheringNoSet = new TreeSet<>();
 
@@ -442,7 +442,8 @@ public class ProductionServiceImpl implements ProductionService {
 	    for (String mrpGatheringNo : mrpGatheringNoList.values()) {
 	    	
 	    	mrpGatheringNoSet.add(mrpGatheringNo);
-	    }     //여기서 정렬 트리셋
+	            
+	    }
 
 	    resultMap.put("firstMrpGatheringNo", mrpGatheringNoSet.pollFirst());
 	    resultMap.put("lastMrpGatheringNo", mrpGatheringNoSet.pollLast());
@@ -450,8 +451,9 @@ public class ProductionServiceImpl implements ProductionService {
 	    for (String mrpNo : mrpNoAndItemCodeMap.keySet()) {
 	    	String itemCode = mrpNoAndItemCodeMap.get(mrpNo);
 	    	String mrpGatheringNo = itemCodeAndMrpGatheringNoMap.get(itemCode);
-
+	    	
 	    	HashMap<String, String> map = new HashMap<>();
+
 	    	map.put("mrpNo", mrpNo);
 	    	map.put("mrpGatheringNo", mrpGatheringNo);
 	    	map.put("mrpGatheringStatus", "Y");
@@ -464,7 +466,7 @@ public class ProductionServiceImpl implements ProductionService {
 	    resultMap.put("changeMrpGatheringStatus", mrpNoList);
 
 	    StringBuffer sb = new StringBuffer();
-
+	 		
 	    for(String mrpGatheringNo : mrpGatheringNoList.values()) {
 	    	sb.append(mrpGatheringNo);
 	    	sb.append(",");
@@ -475,7 +477,7 @@ public class ProductionServiceImpl implements ProductionService {
 	    parameter.put("mrpGatheringNo", sb.toString());
 	    mrpMapper.updateMrpGatheringContract(parameter);
 
-		return resultMap;   
+		return resultMap;
 	}
 	public String getNewMpsNo(String mpsPlanDate) {
 		StringBuffer newEstimateNo = null;
