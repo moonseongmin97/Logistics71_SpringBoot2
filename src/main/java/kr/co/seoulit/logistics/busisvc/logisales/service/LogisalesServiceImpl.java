@@ -54,20 +54,35 @@ public class LogisalesServiceImpl implements LogisalesService {
 
 		ModelMap resultMap = null;
 
+		int cnt = 1;
+
+		//새로운 견적 일련번호 생성
 		String newEstimateNo = getNewEstimateNo(estimateDate);
 
+		//생성한 견적 일련번호를 TO에 추가
 		newEstimateTO.setEstimateNo(newEstimateNo);
 
+		//newEstimateTO에는 견적상세추가데이터인 estimateDetailTOList도 포함되어있음. 그럼 같이 insert 되는거 아닌가?
+		//아니다. estimate 테이블을 보면 estimateDetailTOList 컬럼이 없다.
+		//견적 추가 데이터만 테이블에 삽입
 		estimateMapper.insertEstimate(newEstimateTO);
-			
+
+		//이걸 ArrayList로 받는 이유가 견적 하나당 상세 견적이 여러개일수 있기 때문이다.
 		ArrayList<EstimateDetailTO> estimateDetailTOList = newEstimateTO.getEstimateDetailTOList(); //bean객체
-			
+
+		//지금 이 과정이 상세견적에 견적상세일련번호를 만들고 있는거다.
 		for (EstimateDetailTO bean : estimateDetailTOList) {
-			String newEstimateDetailNo = getNewEstimateDetailNo(newEstimateNo);
-				
+			//상세견적 하나당 새로운 견적상세일련번호를 만들고 있다.
+			StringBuffer newEstimateDetailNo = new StringBuffer();
+			newEstimateDetailNo.append("ES");
+			newEstimateDetailNo.append(newEstimateNo);
+			newEstimateDetailNo.append("-");
+			newEstimateDetailNo.append(String.format("%02d", cnt++));
+
+
 			bean.setEstimateNo(newEstimateNo);
-				
-			bean.setEstimateDetailNo(newEstimateDetailNo);
+			bean.setEstimateDetailNo(newEstimateDetailNo.toString());
+
 		}
 
 		resultMap = batchEstimateDetailListProcess(estimateDetailTOList,newEstimateNo);
